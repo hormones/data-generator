@@ -4,14 +4,14 @@ import com.hormones.random.field.Field;
 
 import java.util.UUID;
 
-public class UUIDLongField extends Field<Long> {
+public class UUIDLongField extends Field<String> {
 
     public UUIDLongField(String name) {
         super(name);
     }
 
     @Override
-    public Long get() {
-        return Math.abs(UUID.randomUUID().getLeastSignificantBits());
+    public String get() {
+        return String.valueOf(Math.abs(UUID.randomUUID().getLeastSignificantBits()));
     }
 }
