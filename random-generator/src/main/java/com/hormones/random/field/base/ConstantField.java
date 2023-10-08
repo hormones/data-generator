@@ -1,4 +1,6 @@
-package com.hormones.random.field;
+package com.hormones.random.field.base;
+
+import com.hormones.random.field.Field;
 
 public class ConstantField<T> extends Field<T> {
 
