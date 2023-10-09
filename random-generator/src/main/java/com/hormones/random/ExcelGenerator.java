@@ -5,7 +5,11 @@ import com.alibaba.excel.util.ListUtils;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
 import com.github.javafaker.Address;
 import com.google.common.collect.Lists;
+import com.hormones.random.field.DataBuilder;
+import com.hormones.random.field.DataBuilder.FieldData;
 import com.hormones.random.field.Field;
+import com.hormones.random.field.base.UUIDLongField;
+import com.hormones.random.field.calculate.MD5Field;
 import com.hormones.random.field.base.ConstantField;
 import com.hormones.random.field.faker.AddressField;
 import com.hormones.random.field.faker.NameField;
@@ -32,17 +36,21 @@ public class ExcelGenerator {
         LocalTime from2 = LocalTime.of(10, 10, 10);
         LocalTime to2 = LocalTime.of(23, 59, 59);
 
-        List<Field<?>> fields = Lists.newArrayList(
-                new NameField("姓名"),
-                new ConstantField<>("毕业院校", "南西大学"),
-                new DatePatternField("报道日期", from1, to1),
-                new TimePatternField("报道时间", from2, to2),
-                new PhoneField("手机号码"),
-                new DataSetField<>("性别", Lists.newArrayList("男", "女", "不详")),
-                new AddressField("城市", Address::cityName),
-                new AddressField("详细地址")
-        );
-        ExcelGenerator.generate("test.xlsx", "测试sheet", 10, fields);
+        FieldData fieldData = DataBuilder.create(10)
+                .add(new MD5Field("MD5"))
+                .add(new UUIDLongField("UUID"))
+                .add(new NameField("姓名"))
+                .add(new ConstantField<>("毕业院校", "南西大学"), String::valueOf)
+                .add(new DatePatternField("报道日期", from1, to1))
+                .add(new TimePatternField("报道时间", from2, to2))
+                .add(new PhoneField("手机号码"))
+                .add(new DataSetField<>("性别", Lists.newArrayList("男", "女", "不详")))
+                .add(new AddressField("城市", Address::cityName))
+                .add(new AddressField("详细地址"))
+                .distinct()
+                .get();
+        System.out.println("data size:" + fieldData.getData().size());
+        ExcelGenerator.generate("test.xlsx", "测试sheet", fieldData.getFields(), fieldData.getData());
     }
 
     /**
