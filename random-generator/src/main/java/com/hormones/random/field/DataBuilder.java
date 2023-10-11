@@ -1,63 +1,51 @@
 package com.hormones.random.field;
 
-import com.hormones.random.field.range.IntegerField;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
-public class DataBuilder {
+public class DataBuilder extends Field<List<Object>> {
 
-    protected final int amount;
+    protected final List<Field<?>> fields = new ArrayList<>();
 
-    protected final List<FieldValues<?>> fields = new ArrayList<>();
+    protected final List<Field<?>> distinctFields = new ArrayList<>();
 
     protected boolean distinct = false;
 
     protected Locale locale = Locale.SIMPLIFIED_CHINESE;
 
-    private DataBuilder(int amount) {
-        this.amount = Math.max(1, amount);
+    private DataBuilder() {
+        super("unused");
     }
 
-    public static DataBuilder create(int amount) {
-        return new DataBuilder(amount);
+    public static DataBuilder create() {
+        return new DataBuilder();
     }
 
-    /**
-     * 添加需要生成随机数的字段
-     *
-     * @param field    字段定义
-     * @param calcFunc 标识该字段需要参与CalculateField字段的计算，calcFunc得到的值会作为计算值
-     * @param <T>      T
-     * @return this
-     */
-    public <T> DataBuilder add(Field<T> field, Function<T, String> calcFunc) {
-        this.fields.add(new FieldValues<T>(field, amount, calcFunc));
-        if (field instanceof CalculateField) {
-            ((CalculateField<?>) field).setFields(this.fields);
+    public final DataBuilder add(Field<?>... fields) {
+        if (ArrayUtils.isNotEmpty(fields)) {
+            this.fields.addAll(Arrays.asList(fields));
+        }
+        return this;
+    }
+
+    public DataBuilder distinct(Field<?>... fields) {
+        this.distinct = true;
+        if (ArrayUtils.isNotEmpty(fields)) {
+            this.distinctFields.addAll(Arrays.asList(fields));
         }
         return this;
     }
 
     /**
-     * @see #add(Field, Function)
-     */
-    public <T> DataBuilder add(Field<T> field) {
-        return this.add(field, null);
-    }
-
-    public DataBuilder distinct() {
-        this.distinct = true;
-        return this;
-    }
-
-    /**
-     * 目前该方法不生效
+     * TODO... 目前该方法不生效
      *
      * @param locale Locale
      * @return this
@@ -67,88 +55,65 @@ public class DataBuilder {
         return this;
     }
 
-    public FieldData get() {
-        List<List<Object>> result = new ArrayList<>();
-        for (int i = 0; i < this.amount; i++) {
-            List<Object> data = new ArrayList<>();
-            for (FieldValues<?> field : this.fields) {
-                data.add(field.getValue(i));
+    @Override
+    protected List<Object> generate() {
+        List<Object> next = new ArrayList<>(this.fields.size());
+
+        Map<Integer, CalculateField<?>> calcFields = new LinkedHashMap<>();
+        for (int i = 0; i < this.fields.size(); i++) {
+            Field<?> field = this.fields.get(i);
+            if (field instanceof CalculateField) {
+                calcFields.put(i, (CalculateField<?>) field);
+                continue;
             }
-            boolean isRepeat = false;
-            if (this.distinct) {
-                for (List<Object> existedData : result) {
-                    boolean same = true;
-                    for (int j = 0; j < existedData.size(); j++) {
-                        same = same && Objects.equals(existedData.get(j), data.get(j));
-                    }
-                    if (same) {
-                        isRepeat = true;
-                        break;
-                    }
-                }
-            }
-            if (!isRepeat) {
-                result.add(data);
-            }
+            next.add(field.next());
         }
-        return new FieldData(this.fields, result);
+        calcFields.forEach((index, field) -> {
+            next.add(index, field.next());
+        });
+        return next;
     }
 
-    public static class FieldValues<T> {
-        private final Field<T> field;
+    public FieldData next(int amount) {
+        List<List<Object>> dataset = new ArrayList<>(amount);
 
-        private final int amount;
-        private final Function<T, String> func;
+        amount = Math.max(1, amount);
 
-        private final List<T> values = new ArrayList<>();
-
-        private final List<String> funcValues = new ArrayList<>();
-
-        public FieldValues(Field<T> field, int amount, Function<T, String> func) {
-            this.field = field;
-            this.amount = Math.max(1, amount);
-            this.func = func;
-        }
-
-        public Field<T> getField() {
-            return field;
-        }
-
-        public int getAmount() {
-            return amount;
-        }
-
-        public Function<T, String> getFunc() {
-            return func;
-        }
-
-        public T getValue(int index) {
-            this.generateData();
-            if (index >= this.values.size()) {
-                return null;
+        int times = 0;
+        while (dataset.size() < amount) {
+            List<Object> data = this.generate();
+            if (!this.distinct || this.isDistinctData(dataset, data)) {
+                dataset.add(data);
             }
-            return this.values.get(index);
-        }
-
-        public String getFuncValue(int index) {
-            this.generateData();
-            if (index >= this.funcValues.size()) {
-                return "";
-            }
-            return this.funcValues.get(index);
-        }
-
-        protected void generateData() {
-            if (CollectionUtils.isEmpty(values)) {
-                for (int i = 0; i < this.amount; i++) {
-                    T value = this.field.get();
-                    this.values.add(value);
-                    if (this.func != null) {
-                        this.funcValues.add(this.func.apply(value));
-                    }
-                }
+            times++;
+            if (times > amount * 10) {
+                System.out.println("generate data failed, looping multiple times still cannot obtain sufficient data.");
+                break;
             }
         }
+
+        return new FieldData(this.fields, dataset);
+    }
+
+    protected boolean isDistinctData(List<List<Object>> dataset, List<Object> data) {
+        boolean repeat = false;
+        List<Integer> indexes = new ArrayList<>();
+        for (int i = 0; i < this.fields.size(); i++) {
+            if (CollectionUtils.isEmpty(this.distinctFields) || this.distinctFields.contains(this.fields.get(i))) {
+                indexes.add(i);
+            }
+        }
+        for (List<Object> existedData : dataset) {
+            boolean same = true;
+            for (Integer index : indexes) {
+                same = same && Objects.equals(data.get(index), existedData.get(index));
+            }
+            if (same) {
+                repeat = true;
+                break;
+            }
+        }
+        return !repeat;
     }
 
     public static class FieldData {
@@ -156,8 +121,8 @@ public class DataBuilder {
 
         protected final List<List<Object>> data;
 
-        public FieldData(List<FieldValues<?>> fields, List<List<Object>> data) {
-            this.fields = fields.stream().map(f -> f.field).collect(Collectors.toList());
+        public FieldData(List<Field<?>> fields, List<List<Object>> data) {
+            this.fields = fields;
             this.data = data;
         }
 
@@ -168,15 +133,5 @@ public class DataBuilder {
         public List<List<Object>> getData() {
             return this.data;
         }
-    }
-
-    public static void main(String[] args) {
-        FieldData fieldData = DataBuilder.create(10)
-                // .add(new IntegerField("as", 3, 10), String::valueOf)
-                // .add(new HashField("hash"))
-                .add(new IntegerField("ds", 3, 10), String::valueOf)
-                .get();
-        System.out.println(fieldData.getFields());
-        System.out.println(fieldData.getData());
     }
 }

@@ -13,7 +13,7 @@ public class DatePatternField extends PatternField<LocalDate, String> {
     protected final DateTimeFormatter formatter;
 
     public DatePatternField(DateField field, String pattern) {
-        super(field.getName(), field);
+        super(field);
         this.formatter = DateTimeFormatter.ofPattern(pattern);
     }
 

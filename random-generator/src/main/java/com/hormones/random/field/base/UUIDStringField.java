@@ -11,7 +11,7 @@ public class UUIDStringField extends Field<String> {
     }
 
     @Override
-    public String get() {
+    public String generate() {
         return UUID.randomUUID().toString();
     }
 }

@@ -4,8 +4,8 @@ public abstract class PatternField<T, K> extends Field<K> {
 
     protected final Field<T> holder;
 
-    public PatternField(String name, Field<T> holder) {
-        super(name);
+    public PatternField(Field<T> holder) {
+        super(holder.getName());
         this.holder = holder;
     }
 
@@ -14,8 +14,8 @@ public abstract class PatternField<T, K> extends Field<K> {
     }
 
     @Override
-    public final K get() {
-        T value = this.holder.get();
+    public final K generate() {
+        T value = this.holder.next();
         return this.pattern(value);
     }
 

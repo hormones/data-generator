@@ -8,19 +8,23 @@ import java.util.List;
 
 public class DataSetField<T> extends PatternField<Integer, T> {
 
-    protected final List<T> keys;
+    protected final List<T> dataset;
 
-    public DataSetField(String name, List<T> keys) {
-        this(name, 0, keys);
+    public DataSetField(String name, List<T> dataset) {
+        this(name, 0, dataset);
     }
 
-    public DataSetField(String name, int auto, List<T> keys) {
-        super(name, new IntegerField(name, 0, keys.size() - 1, auto));
-        this.keys = keys;
+    public DataSetField(String name, int auto, List<T> dataset) {
+        super(new IntegerField(name, 0, dataset.size() - 1, auto));
+        this.dataset = dataset;
+    }
+
+    public List<T> getDataset() {
+        return dataset;
     }
 
     @Override
     protected T pattern(Integer value) {
-        return this.keys.get(value);
+        return this.dataset.get(value);
     }
 }

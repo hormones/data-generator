@@ -35,7 +35,7 @@ public abstract class RangeField<T extends Comparable<? super T>> extends Field<
     }
 
     @Override
-    public T get() {
+    public T generate() {
         if (this.auto != 0L) {
             T next;
             if (Objects.isNull(this.previous)) {

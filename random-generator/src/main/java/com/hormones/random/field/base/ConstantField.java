@@ -4,15 +4,13 @@ import com.hormones.random.field.Field;
 
 public class ConstantField<T> extends Field<T> {
 
-    private final T value;
-
     public ConstantField(String name, T value) {
         super(name);
         this.value = value;
     }
 
     @Override
-    public T get() {
+    public T generate() {
         return this.value;
     }
 }

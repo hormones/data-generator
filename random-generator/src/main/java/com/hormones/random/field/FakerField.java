@@ -31,7 +31,7 @@ public abstract class FakerField<T, K> extends Field<K> {
     public abstract T getEntity();
 
     @Override
-    public final K get() {
+    public final K generate() {
         return this.function.apply(this.getEntity());
     }
 }

@@ -15,7 +15,7 @@ public class StringField extends PatternField<Integer, String> {
     }
 
     public StringField(String name, int min, int max) {
-        super(name, new IntegerField(name, min, max));
+        super(new IntegerField(name, min, max));
     }
 
     @Override
