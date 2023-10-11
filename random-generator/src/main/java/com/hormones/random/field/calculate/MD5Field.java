@@ -7,17 +7,8 @@ import com.hormones.random.util.FieldUtil;
 
 public class MD5Field extends CalculateField<String> {
 
-    @SuppressWarnings("rawtypes")
     public MD5Field(String name, Field<?>... fields) {
-        super(name, new ConvertField[fields.length]);
-        for (int i = 0; i < fields.length; i++) {
-            Field<?> field = fields[i];
-            if (field instanceof ConvertField) {
-                this.fields[i] = (ConvertField) field;
-                continue;
-            }
-            this.fields[i] = new ConvertField<>(field, String::valueOf);
-        }
+        super(name, String::valueOf, new ConvertField[fields.length]);
     }
 
     @Override
