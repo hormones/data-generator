@@ -13,8 +13,6 @@ public abstract class RangeField<T extends Comparable<? super T>> extends Field<
 
     protected final T to;
 
-    protected T previous;
-
     public RangeField(String name, T from, T to, long auto) {
         super(name);
         this.from = from;
@@ -38,7 +36,7 @@ public abstract class RangeField<T extends Comparable<? super T>> extends Field<
     public T generate() {
         if (this.auto != 0L) {
             T next;
-            if (Objects.isNull(this.previous)) {
+            if (Objects.isNull(this.value)) {
                 next = this.from;
             } else {
                 next = this.getIncrement();
@@ -46,7 +44,6 @@ public abstract class RangeField<T extends Comparable<? super T>> extends Field<
             if (this.isOutOfRange(next)) {
                 next = this.from;
             }
-            this.previous = next;
             return next;
         }
         return this.getRandom();

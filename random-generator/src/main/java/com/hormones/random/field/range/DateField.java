@@ -22,7 +22,7 @@ public class DateField extends RangeField<LocalDate> {
 
     @Override
     protected LocalDate getIncrement() {
-        return this.previous.plusDays(this.auto);
+        return this.value.plusDays(this.auto);
     }
 
     @Override

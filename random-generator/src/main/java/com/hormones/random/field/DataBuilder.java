@@ -81,7 +81,7 @@ public class DataBuilder extends Field<List<Object>> {
 
         int times = 0;
         while (dataset.size() < amount) {
-            List<Object> data = this.generate();
+            List<Object> data = this.next();
             if (!this.distinct || this.isDistinctData(dataset, data)) {
                 dataset.add(data);
             }

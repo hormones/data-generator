@@ -25,7 +25,7 @@ public class ConvertField<T, K> extends Field<FunctionValue> {
 
     @Override
     public FunctionValue get() {
-        return this.generate();
+        return this.next();
     }
 
     @Override

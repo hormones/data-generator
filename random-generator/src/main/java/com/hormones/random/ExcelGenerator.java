@@ -50,7 +50,7 @@ public class ExcelGenerator {
                 .add(new ConstantField<>("毕业院校", "南西大学"))
                 .add(new DatePatternField("出生日期", from1, to1))
                 .add(new PhoneField("手机号码"))
-                .add(new DateTimePatternField("报道时间", from2, to2))
+                .add(new DateTimePatternField("打卡时间", from2, to2))
                 .add(new DataSetField<>("部门", Lists.newArrayList("开发部门", "测试部门", "营销部门", "运营部门")))
                 .add(new DataSetField<>("岗位", Lists.newArrayList("开发工程师", "测试工程师", "开发经理", "测试经理")))
                 .add(new StringStemField(new IntegerField("工作进度", 10, 100, 1), "%"))
