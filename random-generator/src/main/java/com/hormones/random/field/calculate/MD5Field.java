@@ -1,14 +1,23 @@
 package com.hormones.random.field.calculate;
 
 import com.hormones.random.field.CalculateField;
+import com.hormones.random.field.Field;
 import com.hormones.random.field.base.ConvertField;
 import com.hormones.random.util.FieldUtil;
 
 public class MD5Field extends CalculateField<String> {
 
-    @SafeVarargs
-    public MD5Field(String name, ConvertField<?, String>... fields) {
-        super(name, fields);
+    @SuppressWarnings("rawtypes")
+    public MD5Field(String name, Field<?>... fields) {
+        super(name, new ConvertField[fields.length]);
+        for (int i = 0; i < fields.length; i++) {
+            Field<?> field = fields[i];
+            if (field instanceof ConvertField) {
+                this.fields[i] = (ConvertField) field;
+                continue;
+            }
+            this.fields[i] = new ConvertField<>(field, String::valueOf);
+        }
     }
 
     @Override

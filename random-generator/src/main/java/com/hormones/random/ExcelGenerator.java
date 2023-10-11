@@ -40,13 +40,14 @@ public class ExcelGenerator {
         LocalDateTime to2 = LocalDateTime.of(2023, 6, 1, 23, 59, 59);
 
         Field<String> nameField = new NameField("姓名");
+        IntegerField ageField = new IntegerField("年龄", 18, 60);
 
         FieldData fieldData = DataBuilder.create()
                 .add(new UUIDLongField("UUID"))
-                .add(new MD5Field("MD5", new ConvertField<>(nameField, String::valueOf)))
+                .add(new MD5Field("MD5", nameField, new ConvertField<>(ageField, String::valueOf)))
                 .add(nameField)
                 .add(new DataSetField<>("性别", Lists.newArrayList("男", "女", "不详")))
-                .add(new IntegerField("年龄", 18, 60))
+                .add(ageField)
                 .add(new ConstantField<>("毕业院校", "南西大学"))
                 .add(new DatePatternField("出生日期", from1, to1))
                 .add(new PhoneField("手机号码"))
