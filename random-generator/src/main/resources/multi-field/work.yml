@@ -1,0 +1,17 @@
+# 默认展示的列名
+fields:
+  - 部门
+  - 岗位
+
+# 随机数据集
+data:
+  - value: 开发部门
+    children:
+      - value: 开发经理
+      - value: 开发架构师
+      - value: 开发工程师
+  - value: 测试部门
+    children:
+      - value: 测试经理
+      - value: 测试架构师
+      - value: 测试工程师

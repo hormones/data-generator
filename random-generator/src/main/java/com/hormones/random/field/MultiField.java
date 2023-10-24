@@ -3,6 +3,7 @@ package com.hormones.random.field;
 import com.hormones.random.field.pattern.DataSetField;
 import com.hormones.random.field.pattern.StringField;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,9 @@ public abstract class MultiField<T> extends Field<List<T>> {
         if (CollectionUtils.isNotEmpty(customNames)) {
             for (int i = 0; i < defaultNames.size(); i++) {
                 if (customNames.size() > i) {
-                    defaultNames.set(i, customNames.get(i));
+                    if (StringUtils.isNotBlank(customNames.get(i))) {
+                        defaultNames.set(i, customNames.get(i));
+                    }
                 }
             }
         }

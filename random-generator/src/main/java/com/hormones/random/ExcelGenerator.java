@@ -52,8 +52,9 @@ public class ExcelGenerator {
                 .add(new DatePatternField("出生日期", from1, to1))
                 .add(new PhoneField("手机号码"))
                 .add(new DateTimePatternField("打卡时间", from2, to2))
-                .add(new DataSetField<>("部门", Lists.newArrayList("开发部门", "测试部门", "营销部门", "运营部门")))
-                .add(new DataSetField<>("岗位", Lists.newArrayList("开发工程师", "测试工程师", "开发经理", "测试经理")))
+                // 利用配置文件制作带有级联关系的随机数据，文件位于：random-generator\src\main\resources\multi-field\目录下
+                // 使用时还可以自定义列名，不自定义则使用默认的列名
+                .add(new DynamicMultiField("work.yml", "自定义部门列名"))
                 .add(new StringStemField(new IntegerField("工作进度", 10, 100, 1), "%"))
                 // .add(new AddressField("城市", Address::cityName))
                 // 利用配置文件制作带有级联关系的随机数据，文件位于：random-generator\src\main\resources\multi-field\目录下
