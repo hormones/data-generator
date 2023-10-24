@@ -56,21 +56,30 @@ public class DataBuilder extends Field<List<Object>> {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     protected List<Object> generate() {
-        List<Object> next = new ArrayList<>(this.fields.size());
+        List<Object> next = new ArrayList<>();
 
         Map<Integer, CalculateField<?>> calcFields = new LinkedHashMap<>();
-        for (int i = 0; i < this.fields.size(); i++) {
-            Field<?> field = this.fields.get(i);
+        int index = 0;
+        for (Field<?> field : this.fields) {
             if (field instanceof CalculateField) {
-                calcFields.put(i, (CalculateField<?>) field);
+                calcFields.put(index, (CalculateField<?>) field);
                 continue;
             }
-            next.add(field.next());
+            if (field instanceof MultiField) {
+                MultiField multiField = (MultiField) field;
+                List data = (List) multiField.next();
+                for (int i = 0; i < multiField.getSize(); i++) {
+                    next.add(data.size() > i ? data.get(i) : "");
+                }
+                index += multiField.getSize();
+            } else {
+                index++;
+                next.add(field.next());
+            }
         }
-        calcFields.forEach((index, field) -> {
-            next.add(index, field.next());
-        });
+        calcFields.forEach((i, field) -> next.add(i, field.next()));
         return next;
     }
 
@@ -91,8 +100,16 @@ public class DataBuilder extends Field<List<Object>> {
                 break;
             }
         }
+        List<Field<?>> fields = new ArrayList<>();
+        for (Field<?> field : this.fields) {
+            if (field instanceof MultiField) {
+                fields.addAll(((MultiField) field).getFields());
+            } else {
+                fields.add(field);
+            }
+        }
 
-        return new FieldData(this.fields, dataset);
+        return new FieldData(fields, dataset);
     }
 
     protected boolean isDistinctData(List<List<Object>> dataset, List<Object> data) {

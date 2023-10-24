@@ -15,7 +15,7 @@ public class DataSetField<T> extends PatternField<Integer, T> {
     }
 
     public DataSetField(String name, int auto, List<T> dataset) {
-        super(new IntegerField(name, 0, dataset.size() - 1, auto));
+        super(new IntegerField(name, 0, dataset.size(), auto));
         this.dataset = dataset;
     }
 

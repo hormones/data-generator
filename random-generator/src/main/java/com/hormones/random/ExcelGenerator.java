@@ -3,7 +3,6 @@ package com.hormones.random;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.util.ListUtils;
 import com.alibaba.excel.write.style.column.LongestMatchColumnWidthStyleStrategy;
-import com.github.javafaker.Address;
 import com.google.common.collect.Lists;
 import com.hormones.random.field.DataBuilder;
 import com.hormones.random.field.DataBuilder.FieldData;
@@ -15,6 +14,7 @@ import com.hormones.random.field.calculate.MD5Field;
 import com.hormones.random.field.faker.AddressField;
 import com.hormones.random.field.faker.NameField;
 import com.hormones.random.field.faker.PhoneField;
+import com.hormones.random.field.multi.DynamicMultiField;
 import com.hormones.random.field.pattern.DataSetField;
 import com.hormones.random.field.pattern.DatePatternField;
 import com.hormones.random.field.pattern.DateTimePatternField;
@@ -55,7 +55,10 @@ public class ExcelGenerator {
                 .add(new DataSetField<>("部门", Lists.newArrayList("开发部门", "测试部门", "营销部门", "运营部门")))
                 .add(new DataSetField<>("岗位", Lists.newArrayList("开发工程师", "测试工程师", "开发经理", "测试经理")))
                 .add(new StringStemField(new IntegerField("工作进度", 10, 100, 1), "%"))
-                .add(new AddressField("城市", Address::cityName))
+                // .add(new AddressField("城市", Address::cityName))
+                // 利用配置文件制作带有级联关系的随机数据，文件位于：random-generator\src\main\resources\multi-field\目录下
+                // 使用时还可以自定义列名，不自定义则使用默认的列名
+                .add(new DynamicMultiField("address.yml", "自定义省列名", "自定义市列名"))
                 .add(new AddressField("详细地址"))
                 .distinct(nameField)
                 .next(200);
