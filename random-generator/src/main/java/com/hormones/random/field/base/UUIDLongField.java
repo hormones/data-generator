@@ -11,7 +11,7 @@ public class UUIDLongField extends Field<String> {
     }
 
     @Override
-    public String generate() {
+    protected String generate() {
         return String.valueOf(Math.abs(UUID.randomUUID().getLeastSignificantBits()));
     }
 }

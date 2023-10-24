@@ -1,4 +1,6 @@
-package com.hormones.random.field;
+package com.hormones.random.field.abs;
+
+import com.hormones.random.field.Field;
 
 public abstract class PatternField<T, K> extends Field<K> {
 
@@ -14,7 +16,7 @@ public abstract class PatternField<T, K> extends Field<K> {
     }
 
     @Override
-    public final K generate() {
+    protected final K generate() {
         T value = this.holder.next();
         return this.pattern(value);
     }

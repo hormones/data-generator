@@ -1,7 +1,7 @@
 package com.hormones.random.field.pattern;
 
 import com.hormones.random.field.Field;
-import com.hormones.random.field.PatternField;
+import com.hormones.random.field.abs.PatternField;
 
 public class StringStemField extends PatternField<Object, String> {
     public static final String EMPTY = "";

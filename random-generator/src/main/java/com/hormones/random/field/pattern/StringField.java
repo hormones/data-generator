@@ -1,6 +1,6 @@
 package com.hormones.random.field.pattern;
 
-import com.hormones.random.field.PatternField;
+import com.hormones.random.field.abs.PatternField;
 import com.hormones.random.field.range.IntegerField;
 
 public class StringField extends PatternField<Integer, String> {

@@ -1,14 +1,12 @@
 package com.hormones.random.field.multi;
 
-import com.hormones.random.field.CascadeField;
-import com.hormones.random.field.MultiField;
+import com.hormones.random.field.abs.MultiField;
 import com.hormones.random.field.pattern.DataSetField;
 import org.apache.commons.collections4.CollectionUtils;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,6 +14,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+/**
+ * 通过YML配置文件生成级联随机数据
+ */
 public class DynamicMultiField extends MultiField<String> {
     private static final Map<String, Config> FILE_CONFIG = new HashMap<>();
 
@@ -55,8 +56,7 @@ public class DynamicMultiField extends MultiField<String> {
         }
         Config config = FILE_CONFIG.get(fileName);
         if (Objects.isNull(config)) {
-            URL basePath = DynamicMultiField.class.getResource("/");
-            String filePath = basePath.getPath() + "multi-field/" + fileName;
+            String filePath = DynamicMultiField.class.getResource("/").getPath() + "multi-field/" + fileName;
             System.out.println("read config file: " + filePath);
             try (InputStream in = new FileInputStream(filePath)) {
                 Yaml yaml = new Yaml();

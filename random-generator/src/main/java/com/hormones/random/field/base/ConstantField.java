@@ -10,7 +10,7 @@ public class ConstantField<T> extends Field<T> {
     }
 
     @Override
-    public T generate() {
+    protected final T generate() {
         return this.value;
     }
 }

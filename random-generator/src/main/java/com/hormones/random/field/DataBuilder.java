@@ -1,5 +1,7 @@
 package com.hormones.random.field;
 
+import com.hormones.random.field.abs.CalculateField;
+import com.hormones.random.field.abs.MultiField;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
 

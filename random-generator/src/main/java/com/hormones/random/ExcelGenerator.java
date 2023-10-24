@@ -7,8 +7,8 @@ import com.google.common.collect.Lists;
 import com.hormones.random.field.DataBuilder;
 import com.hormones.random.field.DataBuilder.FieldData;
 import com.hormones.random.field.Field;
+import com.hormones.random.field.abs.CalculateField.ConvertField;
 import com.hormones.random.field.base.ConstantField;
-import com.hormones.random.field.base.ConvertField;
 import com.hormones.random.field.base.UUIDLongField;
 import com.hormones.random.field.calculate.MD5Field;
 import com.hormones.random.field.faker.AddressField;
@@ -63,7 +63,6 @@ public class ExcelGenerator {
                 .add(new AddressField("详细地址"))
                 .distinct(nameField)
                 .next(200);
-
         ExcelGenerator.generate("test.xlsx", "测试sheet", fieldData.getFields(), fieldData.getData());
     }
 

@@ -1,6 +1,6 @@
 package com.hormones.random.field.range;
 
-import com.hormones.random.field.RangeField;
+import com.hormones.random.field.abs.RangeField;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;

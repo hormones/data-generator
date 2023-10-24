@@ -1,6 +1,7 @@
-package com.hormones.random.field;
+package com.hormones.random.field.abs;
 
 import com.github.javafaker.Faker;
+import com.hormones.random.field.Field;
 import com.hormones.random.util.FieldUtil;
 
 import java.util.Locale;
@@ -31,7 +32,7 @@ public abstract class FakerField<T, K> extends Field<K> {
     public abstract T getEntity();
 
     @Override
-    public final K generate() {
+    protected final K generate() {
         return this.function.apply(this.getEntity());
     }
 }

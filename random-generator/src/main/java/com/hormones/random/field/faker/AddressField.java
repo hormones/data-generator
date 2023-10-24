@@ -1,7 +1,7 @@
 package com.hormones.random.field.faker;
 
 import com.github.javafaker.Address;
-import com.hormones.random.field.FakerField;
+import com.hormones.random.field.abs.FakerField;
 
 import java.util.Locale;
 import java.util.function.Function;

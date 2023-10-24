@@ -1,18 +1,17 @@
 package com.hormones.random.field.calculate;
 
-import com.hormones.random.field.CalculateField;
 import com.hormones.random.field.Field;
-import com.hormones.random.field.base.ConvertField;
+import com.hormones.random.field.abs.CalculateField;
 import com.hormones.random.util.FieldUtil;
 
 public class MD5Field extends CalculateField<String> {
 
     public MD5Field(String name, Field<?>... fields) {
-        super(name, String::valueOf, getConvertFields(fields));
+        super(name, String::valueOf, fields);
     }
 
     @Override
-    public String generate() {
+    protected String generate() {
         StringBuilder str = new StringBuilder();
         for (ConvertField<?, String> field : this.fields) {
             if (field.getIndex() != this.getIndex() + 1) {
@@ -22,17 +21,5 @@ public class MD5Field extends CalculateField<String> {
             str.append(field.next().getValue());
         }
         return FieldUtil.calculateMD5(str.toString());
-    }
-
-    private static ConvertField<?, ?>[] getConvertFields(Field<?>... fields) {
-        ConvertField<?, ?>[] convertFields = new ConvertField[fields.length];
-        for (int i = 0; i < fields.length; i++) {
-            if (fields[i] instanceof ConvertField) {
-                convertFields[i] = (ConvertField<?, ?>) fields[i];
-            } else {
-                convertFields[i] = new ConvertField<>(fields[i], String::valueOf);
-            }
-        }
-        return convertFields;
     }
 }

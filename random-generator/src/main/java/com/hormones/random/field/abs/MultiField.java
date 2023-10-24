@@ -1,11 +1,15 @@
-package com.hormones.random.field;
+package com.hormones.random.field.abs;
 
+import com.hormones.random.field.Field;
+import com.hormones.random.field.base.ConstantField;
 import com.hormones.random.field.pattern.DataSetField;
 import com.hormones.random.field.pattern.StringField;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,5 +55,23 @@ public abstract class MultiField<T> extends Field<List<T>> {
             data.add(value);
         }
         return data;
+    }
+
+    protected static class CascadeField<T> extends ConstantField<T> {
+        private DataSetField<CascadeField<T>> children;
+
+        @SafeVarargs
+        public CascadeField(T value, CascadeField<T>... children) {
+            super("useless", value);
+            this.children = null;
+            if (ArrayUtils.isEmpty(children)) {
+                return;
+            }
+            this.children = new DataSetField<>(children[0].getName(), Arrays.asList(children));
+        }
+
+        public final DataSetField<CascadeField<T>> getChildren() {
+            return children;
+        }
     }
 }

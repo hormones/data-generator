@@ -1,4 +1,6 @@
-package com.hormones.random.field;
+package com.hormones.random.field.abs;
+
+import com.hormones.random.field.Field;
 
 import java.util.Objects;
 
@@ -33,7 +35,7 @@ public abstract class RangeField<T extends Comparable<? super T>> extends Field<
     }
 
     @Override
-    public T generate() {
+    protected T generate() {
         if (this.auto != 0L) {
             T next;
             if (Objects.isNull(this.value)) {
