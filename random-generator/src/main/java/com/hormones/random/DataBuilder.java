@@ -1,9 +1,16 @@
-package com.hormones.random.field;
+package com.hormones.random;
 
+import com.hormones.random.field.Field;
 import com.hormones.random.field.abs.CalculateField;
 import com.hormones.random.field.abs.MultiField;
+import com.hormones.random.field.multi.DynamicMultiField;
+import com.hormones.random.generator.ExcelGenerator;
+import com.hormones.random.generator.Generator;
+import com.hormones.random.generator.SqlInsertGenerator;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ArrayUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class DataBuilder extends Field<List<Object>> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DataBuilder.class);
 
     protected final List<Field<?>> fields = new ArrayList<>();
 
@@ -98,7 +106,7 @@ public class DataBuilder extends Field<List<Object>> {
             }
             times++;
             if (times > amount * 10) {
-                System.out.println("generate data failed, looping multiple times still cannot obtain sufficient data.");
+                LOGGER.warn("generate data failed, looping multiple times still cannot obtain sufficient data.");
                 break;
             }
         }
@@ -111,7 +119,22 @@ public class DataBuilder extends Field<List<Object>> {
             }
         }
 
+        LOGGER.info("data generated success, size: " + dataset.size());
         return new FieldData(fields, dataset);
+    }
+
+    public FieldData toExcel(String fileName, String sheetName, int amount) {
+        FieldData fieldData = this.next(amount);
+        Generator generator = new ExcelGenerator(fileName, sheetName, fieldData.getFields(), fieldData.getData());
+        generator.generate();
+        return fieldData;
+    }
+
+    public FieldData toSqlInsert(String fileName, String tableName, int amount) {
+        FieldData fieldData = this.next(amount);
+        Generator generator = new SqlInsertGenerator(fileName, tableName, fieldData.getFields(), fieldData.getData());
+        generator.generate();
+        return fieldData;
     }
 
     protected boolean isDistinctData(List<List<Object>> dataset, List<Object> data) {

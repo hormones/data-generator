@@ -1,0 +1,28 @@
+fields:
+  - 单位
+  - 部门
+  - 岗位
+
+data:
+  - value: A分公司
+    children:
+      - value: 开发部门
+        children:
+          - value: 开发经理
+          - value: 开发架构师
+          - value: 开发工程师
+      - value: 测试部门
+        children:
+          - value: 测试经理
+          - value: 测试架构师
+          - value: 测试工程师
+      - value: 营销部门
+        children:
+          - value: 营销经理
+      - value: 运营部门
+        children:
+          - value: 运营经理
+      - value: 人事部门
+        children:
+          - value: 人事经理
+          - value: 人事专员

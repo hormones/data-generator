@@ -2,7 +2,10 @@ package com.hormones.random.field.multi;
 
 import com.hormones.random.field.abs.MultiField;
 import com.hormones.random.field.pattern.DataSetField;
+import com.hormones.random.util.FieldUtil;
 import org.apache.commons.collections4.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.FileInputStream;
@@ -18,6 +21,8 @@ import java.util.Objects;
  * 通过YML配置文件生成级联随机数据
  */
 public class DynamicMultiField extends MultiField<String> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicMultiField.class);
+
     private static final Map<String, Config> FILE_CONFIG = new HashMap<>();
 
     public DynamicMultiField(String fileName, String... customNames) {
@@ -49,15 +54,15 @@ public class DynamicMultiField extends MultiField<String> {
         }
     }
 
-    @SuppressWarnings({"DataFlowIssue", "IOStreamConstructor"})
+    @SuppressWarnings({"IOStreamConstructor"})
     private static Config getConfig(String fileName) {
         if (Objects.isNull(fileName)) {
             throw new RuntimeException("file name is null");
         }
         Config config = FILE_CONFIG.get(fileName);
         if (Objects.isNull(config)) {
-            String filePath = DynamicMultiField.class.getResource("/").getPath() + "multi-field/" + fileName;
-            System.out.println("read config file: " + filePath);
+            String filePath = FieldUtil.getPath("multi-field/" + fileName);
+            LOGGER.info("read config file: " + filePath);
             try (InputStream in = new FileInputStream(filePath)) {
                 Yaml yaml = new Yaml();
                 config = yaml.loadAs(in, Config.class);

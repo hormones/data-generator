@@ -1,10 +1,14 @@
 # data-generator
-生成假数据
+生成随机假数据，主要用于生成测试数据
 
 ## random-generator
-- 生成excel文件及填充随机数据：`com.hormones.random.ExcelGenerator#main`
+- 生成excel文件及填充随机数据：`com.hormones.random.generator.GeneratorTest#generate_excel`
    
-    生成的excel文件位于：`random-generator\target\classes\test.xlsx`
+  生成的文件位于：`random-generator\target\test-classes\excel.xlsx`
+
+- 生成sql的insert语句文件及填充随机数据：`com.hormones.random.generator.GeneratorTest#generate_sql`
+
+  生成的文件位于：`random-generator\target\test-classes\insert.sql`
 
 ### 已实现的随机功能
 | 功能             | 实现类                                                 | 描述                             |
@@ -24,7 +28,7 @@
 
 以生成省市区为例：
 
-1. 新建配置文件`address.yml`并定义数据，放在`random-generator\src\main\resources\multi-field\`目录下
+1. 新建配置文件`work.yml`并定义数据，放在`random-generator\src\main\resources\multi-field\`目录下
 
    该配置文件已存在，用于参考
 
@@ -32,9 +36,9 @@
 
    ```java
    // 获取级联数据对象
-   DynamicMultiField field = new DynamicMultiField("address.yml")
+   DynamicMultiField field = new DynamicMultiField("work.yml")
    // 通过不断的调用next()方法获取随机数据
-   List<String> data = field.next(); // data: [浙江省, 杭州市, 滨江区]
+   List<String> data = field.next(); // data: [开发部门, 开发经理]
    
    ```
 

@@ -6,6 +6,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
+import java.util.Objects;
 
 public class FieldUtil {
 
@@ -35,4 +36,10 @@ public class FieldUtil {
         }
     }
 
+    public static String getPath(String filePath) {
+        if (filePath.startsWith("/")) {
+            filePath = filePath.substring(1);
+        }
+        return Objects.requireNonNull(FieldUtil.class.getResource("/")).getPath() + filePath;
+    }
 }
