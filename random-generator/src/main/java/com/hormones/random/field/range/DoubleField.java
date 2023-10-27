@@ -41,15 +41,4 @@ public class DoubleField extends RangeField<Double> {
         Random random = new Random();
         return random.doubles(Math.min(this.from, this.to), Math.max(this.from, this.to)).findFirst().getAsDouble();
     }
-
-    public static void main(String[] args) {
-        DoubleField doubleField = new DoubleField("test", 1.0, 50.2, 1.1);
-        System.out.println(doubleField.next());
-        System.out.println(doubleField.next());
-        System.out.println(doubleField.next());
-        System.out.println(doubleField.next());
-        System.out.println(doubleField.next());
-        System.out.println(doubleField.next());
-        System.out.println(doubleField.next());
-    }
 }
