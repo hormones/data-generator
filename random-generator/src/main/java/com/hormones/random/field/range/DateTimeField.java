@@ -9,14 +9,14 @@ import java.time.temporal.ChronoUnit;
 public class DateTimeField extends RangeField<LocalDateTime> {
 
     public DateTimeField(String name) {
-        this(name, LocalDateTime.MIN, LocalDateTime.MAX, 0);
+        this(name, LocalDateTime.MIN, LocalDateTime.MAX, 0L);
     }
 
     public DateTimeField(String name, LocalDateTime from, LocalDateTime to) {
-        this(name, from, to, 0);
+        this(name, from, to, 0L);
     }
 
-    public DateTimeField(String name, LocalDateTime from, LocalDateTime to, int auto) {
+    public DateTimeField(String name, LocalDateTime from, LocalDateTime to, long auto) {
         super(name, from, to, auto);
     }
 

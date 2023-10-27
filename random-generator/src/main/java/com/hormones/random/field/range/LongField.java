@@ -15,7 +15,7 @@ public class LongField extends RangeField<Long> {
         this(name, from, to, 0L);
     }
 
-    public LongField(String name, Long from, Long to, Long auto) {
+    public LongField(String name, Long from, Long to, long auto) {
         super(name, from, to, auto);
     }
 

@@ -8,14 +8,14 @@ import java.util.Random;
 public class DoubleField extends RangeField<Double> {
 
     public DoubleField(String name) {
-        this(name, Double.MIN_VALUE, Double.MAX_VALUE, 0);
+        this(name, Double.MIN_VALUE, Double.MAX_VALUE, 0.0);
     }
 
     public DoubleField(String name, Double from, Double to) {
-        this(name, from, to, 0);
+        this(name, from, to, 0.0);
     }
 
-    public DoubleField(String name, Double from, Double to, Integer auto) {
+    public DoubleField(String name, Double from, Double to, double auto) {
         super(name, from, to, auto);
     }
 
@@ -29,8 +29,7 @@ public class DoubleField extends RangeField<Double> {
         if (autoValue < 0 && Double.MIN_VALUE - autoValue > this.value) {
             return this.from;
         }
-
-        return Math.toDegrees(this.value + autoValue);
+        return this.value + autoValue;
     }
 
     @Override
@@ -41,5 +40,16 @@ public class DoubleField extends RangeField<Double> {
         }
         Random random = new Random();
         return random.doubles(Math.min(this.from, this.to), Math.max(this.from, this.to)).findFirst().getAsDouble();
+    }
+
+    public static void main(String[] args) {
+        DoubleField doubleField = new DoubleField("test", 1.0, 50.2, 1.1);
+        System.out.println(doubleField.next());
+        System.out.println(doubleField.next());
+        System.out.println(doubleField.next());
+        System.out.println(doubleField.next());
+        System.out.println(doubleField.next());
+        System.out.println(doubleField.next());
+        System.out.println(doubleField.next());
     }
 }

@@ -15,7 +15,7 @@ public class IntegerField extends RangeField<Integer> {
         this(name, from, to, 0);
     }
 
-    public IntegerField(String name, Integer from, Integer to, Integer auto) {
+    public IntegerField(String name, Integer from, Integer to, int auto) {
         super(name, from, to, auto);
     }
 
@@ -29,7 +29,7 @@ public class IntegerField extends RangeField<Integer> {
         if (autoValue < 0L && Integer.MIN_VALUE - autoValue > this.value) {
             return this.from;
         }
-        return Math.toIntExact(this.value + autoValue);
+        return this.value + autoValue;
     }
 
     @Override

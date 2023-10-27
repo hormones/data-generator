@@ -15,7 +15,7 @@ public abstract class RangeField<T extends Comparable<? super T>> extends Field<
 
     protected final T to;
 
-    public RangeField(String name, T from, T to, long auto) {
+    public RangeField(String name, T from, T to, Number auto) {
         super(name);
         this.from = from;
         this.to = to;

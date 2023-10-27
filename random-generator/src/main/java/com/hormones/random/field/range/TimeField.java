@@ -8,14 +8,14 @@ import java.time.temporal.ChronoUnit;
 public class TimeField extends RangeField<LocalTime> {
 
     public TimeField(String name) {
-        this(name, LocalTime.MIN, LocalTime.MAX, 0);
+        this(name, LocalTime.MIN, LocalTime.MAX, 0L);
     }
 
     public TimeField(String name, LocalTime from, LocalTime to) {
-        this(name, from, to, 0);
+        this(name, from, to, 0L);
     }
 
-    public TimeField(String name, LocalTime from, LocalTime to, int auto) {
+    public TimeField(String name, LocalTime from, LocalTime to, long auto) {
         super(name, from, to, auto);
     }
 
