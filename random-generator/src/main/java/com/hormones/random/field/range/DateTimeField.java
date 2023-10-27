@@ -22,7 +22,7 @@ public class DateTimeField extends RangeField<LocalDateTime> {
 
     @Override
     protected LocalDateTime getIncrement() {
-        return this.value.plusSeconds(this.auto);
+        return this.value.plusSeconds(this.auto.longValue());
     }
 
     @Override

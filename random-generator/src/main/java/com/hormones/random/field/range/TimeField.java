@@ -21,7 +21,7 @@ public class TimeField extends RangeField<LocalTime> {
 
     @Override
     protected LocalTime getIncrement() {
-        return this.value.plusSeconds(this.auto);
+        return this.value.plusSeconds(this.auto.longValue());
     }
 
     @Override

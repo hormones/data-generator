@@ -22,14 +22,15 @@ public class LongField extends RangeField<Long> {
     @Override
     protected Long getIncrement() {
         // 边界值处理,防止越界
-        if (this.auto > 0L && Long.MAX_VALUE - this.auto < this.value) {
+        long autoValue = this.auto.longValue();
+        if (autoValue > 0L && Long.MAX_VALUE - autoValue < this.value) {
             return this.from;
         }
-        if (this.auto < 0L && Long.MIN_VALUE - this.auto > this.value) {
+        if (autoValue < 0L && Long.MIN_VALUE - autoValue > this.value) {
             return this.from;
         }
 
-        return this.value + this.auto;
+        return this.value + autoValue;
     }
 
     @Override

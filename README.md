@@ -11,18 +11,19 @@
   生成的文件位于：`random-generator\target\test-classes\insert.sql`
 
 ### 已实现的随机功能
-| 功能             | 实现类                                                 | 描述                             |
-| ---------------- | ------------------------------------------------------ | -------------------------------- |
-| UUID             | UUIDLongField/UUIDStringField                          |                                  |
-| MD5              | MD5Field                                               | 使用其它Field生成的数据来生成MD5 |
-| 姓名             | NameField                                              | 生成随机姓名                     |
-| 电话号码         | PhoneField                                             | 生成随机电话号码                 |
-| 地址             | AddressField                                           | 生成随机地址                     |
-| 数字             | IntegerField/LongField                                 | 生成随机数字                     |
-| 日期时间         | DateField/TimeField/DateTimeField                      | 生成随机日期时间                 |
-| 日期时间(格式化) | DatePatternField/TimePatternField/DateTimePatternField | 生成随机的格式化后的日期时间     |
-| 字符             | StringField/StringStemField                            | 生成随机的字符串                 |
-| 动态级联数据     | DynamicMultiField                                      | 通过YML配置文件生成随机级联数据  |
+| 功能        | 实现类                                                    | 描述                   |
+|-----------|--------------------------------------------------------|----------------------|
+| UUID      | UUIDLongField/UUIDStringField                          |                      |
+| MD5       | MD5Field                                               | 使用其它Field生成的数据来生成MD5 |
+| 姓名        | NameField                                              | 生成随机姓名               |
+| 电话号码      | PhoneField                                             | 生成随机电话号码             |
+| 地址        | AddressField                                           | 生成随机地址               |
+| 数字        | IntegerField/LongField                                 | 生成随机数字               |
+| 小数        | DoubleField                                            | 生成随机小数               |
+| 日期时间      | DateField/TimeField/DateTimeField                      | 生成随机日期时间             |
+| 日期时间(格式化) | DatePatternField/TimePatternField/DateTimePatternField | 生成随机的格式化后的日期时间       |
+| 字符        | StringField/StringStemField                            | 生成随机的字符串             |
+| 动态级联数据    | DynamicMultiField                                      | 通过YML配置文件生成随机级联数据    |
 
 `DynamicMultiField`使用说明
 

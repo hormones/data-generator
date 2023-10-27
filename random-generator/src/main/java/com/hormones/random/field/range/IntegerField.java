@@ -22,14 +22,14 @@ public class IntegerField extends RangeField<Integer> {
     @Override
     protected Integer getIncrement() {
         // 边界值处理,防止越界
-        if (this.auto > 0L && Integer.MAX_VALUE - this.auto < this.value) {
+        int autoValue = this.auto.intValue();
+        if (autoValue > 0L && Integer.MAX_VALUE - autoValue < this.value) {
             return this.from;
         }
-        if (this.auto < 0L && Integer.MIN_VALUE - this.auto > this.value) {
+        if (autoValue < 0L && Integer.MIN_VALUE - autoValue > this.value) {
             return this.from;
         }
-
-        return Math.toIntExact(this.value + this.auto);
+        return Math.toIntExact(this.value + autoValue);
     }
 
     @Override
