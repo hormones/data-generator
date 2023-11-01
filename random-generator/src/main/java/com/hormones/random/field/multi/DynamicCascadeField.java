@@ -1,6 +1,6 @@
 package com.hormones.random.field.multi;
 
-import com.hormones.random.field.abs.MultiField;
+import com.hormones.random.field.abs.CascadeField;
 import com.hormones.random.field.pattern.DataSetField;
 import com.hormones.random.util.FieldUtil;
 import org.apache.commons.collections4.CollectionUtils;
@@ -20,37 +20,37 @@ import java.util.Objects;
 /**
  * 通过YML配置文件生成级联随机数据
  */
-public class DynamicMultiField extends MultiField<String> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicMultiField.class);
+public class DynamicCascadeField extends CascadeField<String> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DynamicCascadeField.class);
 
     private static final Map<String, Config> FILE_CONFIG = new HashMap<>();
 
-    public DynamicMultiField(String fileName, String... customNames) {
+    public DynamicCascadeField(String fileName, String... customNames) {
         super(fileName, getConfig(fileName).getFields(), Arrays.asList(customNames));
     }
 
     @Override
-    protected DataSetField<CascadeField<String>> initConfig() {
+    protected DataSetField<RelationField<String>> initConfig() {
         Config config = getConfig(this.getName());
         List<Datum> configData = config.getData();
-        List<CascadeField<String>> data = new ArrayList<>();
+        List<RelationField<String>> data = new ArrayList<>();
         for (Datum datum : configData) {
             data.add(buildDatum(datum));
         }
         return new DataSetField<>("useless", data);
     }
 
-    private static CascadeField<String> buildDatum(Datum datum) {
+    private static RelationField<String> buildDatum(Datum datum) {
         String value = datum.getValue();
         List<Datum> children = datum.getChildren();
         if (CollectionUtils.isNotEmpty(children)) {
-            List<CascadeField<String>> childrenList = new ArrayList<>();
+            List<RelationField<String>> childrenList = new ArrayList<>();
             for (Datum child : children) {
                 childrenList.add(buildDatum(child));
             }
-            return new CascadeField<>(value, childrenList.toArray(new CascadeField[0]));
+            return new RelationField<>(value, childrenList.toArray(new RelationField[0]));
         } else {
-            return new CascadeField<>(value);
+            return new RelationField<>(value);
         }
     }
 

@@ -5,7 +5,8 @@ import com.hormones.random.DataBuilder;
 import com.hormones.random.field.abs.CalculateField.ConvertField;
 import com.hormones.random.field.base.UUIDStringField;
 import com.hormones.random.field.calculate.MD5Field;
-import com.hormones.random.field.multi.DynamicMultiField;
+import com.hormones.random.field.multi.DynamicCascadeField;
+import com.hormones.random.field.multi.PersonField;
 import com.hormones.random.field.pattern.DataSetField;
 import com.hormones.random.field.range.IntegerField;
 import org.junit.Test;
@@ -27,8 +28,9 @@ public class GeneratorTest {
                 .add(ageField)
                 // 利用配置文件制作带有级联关系的随机数据，文件位于：random-generator\src\main\resources\multi-field\目录下
                 // 使用时还可以自定义列名，不自定义则使用默认的列名
-                .add(new DynamicMultiField("organization.yml"))
-                .add(new DynamicMultiField("address.yml", "自定义省列名", "自定义市列名"))
+                .add(new DynamicCascadeField("organization.yml"))
+                .add(new DynamicCascadeField("address.yml", "自定义省列名", "自定义市列名"))
+                .add(new PersonField())
                 .distinct(nameField)
                 .toExcel("excel.xlsx", "sheet1", 200);
 
@@ -48,8 +50,8 @@ public class GeneratorTest {
                 .add(new IntegerField("age", 18, 60))
                 // 利用配置文件制作带有级联关系的随机数据，文件位于：random-generator\src\main\resources\multi-field\目录下
                 // 使用时还可以自定义列名，不自定义则使用默认的列名
-                .add(new DynamicMultiField("organization.yml", "unit", "department", "post"))
-                .add(new DynamicMultiField("address.yml", "province", "city", "district"))
+                .add(new DynamicCascadeField("organization.yml", "unit", "department", "post"))
+                .add(new DynamicCascadeField("address.yml", "province", "city", "district"))
                 .distinct(nameField)
                 .toSqlInsert("insert.sql", "user", 10);
 

@@ -5,6 +5,7 @@ import com.github.javafaker.Faker;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -13,6 +14,7 @@ public class FieldUtil {
     public static final Faker FAKER_CN = new Faker(Locale.SIMPLIFIED_CHINESE);
     public static final Faker FAKER_EN = new Faker(Locale.ENGLISH);
 
+    public static final DateTimeFormatter DEFAULT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static String calculateMD5(String input) {
         try {

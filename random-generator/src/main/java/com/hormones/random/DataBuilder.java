@@ -3,7 +3,6 @@ package com.hormones.random;
 import com.hormones.random.field.Field;
 import com.hormones.random.field.abs.CalculateField;
 import com.hormones.random.field.abs.MultiField;
-import com.hormones.random.field.multi.DynamicMultiField;
 import com.hormones.random.generator.ExcelGenerator;
 import com.hormones.random.generator.Generator;
 import com.hormones.random.generator.SqlInsertGenerator;
@@ -110,17 +109,17 @@ public class DataBuilder extends Field<List<Object>> {
                 break;
             }
         }
-        List<Field<?>> fields = new ArrayList<>();
+        List<String> fieldNames = new ArrayList<>();
         for (Field<?> field : this.fields) {
             if (field instanceof MultiField) {
-                fields.addAll(((MultiField) field).getFields());
+                fieldNames.addAll(((MultiField<?>) field).getFields());
             } else {
-                fields.add(field);
+                fieldNames.add(field.getName());
             }
         }
 
         LOGGER.info("data generated success, size: " + dataset.size());
-        return new FieldData(fields, dataset);
+        return new FieldData(fieldNames, dataset);
     }
 
     public FieldData toExcel(String fileName, String sheetName, int amount) {
@@ -159,16 +158,16 @@ public class DataBuilder extends Field<List<Object>> {
     }
 
     public static class FieldData {
-        protected final List<Field<?>> fields;
+        protected final List<String> fields;
 
         protected final List<List<Object>> data;
 
-        public FieldData(List<Field<?>> fields, List<List<Object>> data) {
+        public FieldData(List<String> fields, List<List<Object>> data) {
             this.fields = fields;
             this.data = data;
         }
 
-        public List<Field<?>> getFields() {
+        public List<String> getFields() {
             return this.fields;
         }
 

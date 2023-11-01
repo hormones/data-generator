@@ -2,7 +2,6 @@ package com.hormones.random.generator;
 
 import com.google.common.io.Files;
 import com.hormones.random.enums.Type;
-import com.hormones.random.field.Field;
 import com.hormones.random.util.FieldUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,14 +30,14 @@ public class SqlInsertGenerator implements Generator {
     /**
      * 字段
      */
-    private final List<Field<?>> fields;
+    private final List<String> fields;
 
     /**
      * 数据
      */
     private final List<List<Object>> dataList;
 
-    public SqlInsertGenerator(String fileName, String tableName, List<Field<?>> fields, List<List<Object>> dataList) {
+    public SqlInsertGenerator(String fileName, String tableName, List<String> fields, List<List<Object>> dataList) {
         this.fileName = fileName;
         this.tableName = tableName;
         this.fields = fields;
@@ -53,7 +52,7 @@ public class SqlInsertGenerator implements Generator {
     @Override
     public void generate() {
         StringBuilder sql = new StringBuilder();
-        String fieldStr = this.fields.stream().map(Field::getName).reduce((a, b) -> a + ", " + b).orElse("");
+        String fieldStr = this.fields.stream().reduce((a, b) -> a + ", " + b).orElse("");
         for (List<Object> data : this.dataList) {
             sql.append("INSERT INTO ")
                     .append(this.tableName)
